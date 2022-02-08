@@ -15,5 +15,5 @@ exports.products = (req, res)=>{
 }
 
 exports.cart = (req, res)=>{
-    res.render("cart", {path: "cart"})
+    res.render("cart", {path: "/cart"})
 }

@@ -15,7 +15,7 @@ app.use(express.static(path.join(rootDir, "public")))
 
 app.use(GetRoutes)
 
-mongoose.connect("mongodb://127.0.0.1:27107/dashboard")
+mongoose.connect("mongodb://127.0.0.1:27017/dashboard")
 .then(result=>{
     console.log("connected");
     app.listen(9000)
