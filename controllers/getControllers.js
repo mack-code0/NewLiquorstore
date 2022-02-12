@@ -3,7 +3,12 @@ const Product = require("./../models/product")
 exports.home = (req, res)=>{
     Product.find()
     .then(products=>{
-        res.render("index", {path: "/", products})
+        let totalCartQuantity = 0;
+        req.user.cart.forEach(product => {
+            totalCartQuantity = totalCartQuantity + product.quantity
+        });
+
+        res.render("index", {path: "/", products, totalCartQuantity})
     })
 }
 

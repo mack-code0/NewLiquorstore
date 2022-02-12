@@ -20,8 +20,19 @@ userSchema.methods.addToCart = function(productId){
     }else{
         emptyCart.push({productId, quantity: 1})
     }
+
+    let totalQuantity = 0
+    emptyCart.forEach(element => {
+        totalQuantity = totalQuantity + element.quantity
+    });
+    
     this.cart = emptyCart
     return this.save()
+    .then(result=>{
+        return {totalQuantity}
+    }).catch(err=>{
+        console.log(err);
+    })
 }
 
 module.exports = mongoose.model("User", userSchema)
