@@ -8,7 +8,10 @@ const productSchema = new Schema({
     unitprice: {type: Number, required: true},
     date: {type: String, required: true},
     description: {type: String, required: true},
-    imageurl: {type: String, required: true}
+    imageurl: {type: String, required: true},
+    category: {type: String, required: true},
+    tag: {type: String, required: true},
+    oldprice: {type: String}
 })
 
 

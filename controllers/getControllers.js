@@ -1,5 +1,10 @@
+const Product = require("./../models/product")
+
 exports.home = (req, res)=>{
-    res.render("index", {path: "/"})
+    Product.find()
+    .then(products=>{
+        res.render("index", {path: "/", products})
+    })
 }
 
 exports.about = (req, res)=>{

@@ -1,0 +1,24 @@
+<div class="col-md-3 d-flex">
+    <div class="product ftco-animate">
+        <div class="img d-flex align-items-center justify-content-center" style="background-image: url('<%= product.imageurl %>');">
+            <div class="desc">
+                <p class="meta-prod d-flex">
+                    <a class="add-to-cart d-flex align-items-center justify-content-center">
+                        <span class="flaticon-shopping-bag"></span>
+                        <span class="d-none productId"><%= product._id %></span>
+                    </a>
+                    <a href="#" class="d-flex align-items-center justify-content-center"><span class="flaticon-heart"></span></a>
+                    <a href="#" class="d-flex align-items-center justify-content-center"><span class="flaticon-visibility"></span></a>
+                </p>
+            </div>
+        </div>
+        <div class="text text-center">
+            <span class="sale"><%= product.tag %></span>
+            <span class="category"><%= product.category %></span>
+            <h2><%= product.title %></h2>
+            <p class="mb-0">
+                <% if(product.oldprice.length>0){ %> <span class="price price-sale">$<%= product.oldprice %></span><% } %> 
+                 <span class="price">$<%= product.unitprice %></span></p>
+        </div>
+    </div>
+</div>
