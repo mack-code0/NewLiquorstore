@@ -4,10 +4,12 @@ addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
         $.post("/addtocart", {productId: this.querySelector(".productId").innerHTML}, (data)=>{
             if(data.mode=="Successful"){
+                console.log("Got here");
                 cartItems.innerHTML = data.totalCartQuantity
                 showCart(data.topNavCart)
                 alert("Added")
             }else{
+                console.log("Got here 1");
                 alert("An error occured")
             }
         })
@@ -26,4 +28,33 @@ function showCart(response){
 	    +'</div>'
 		$(".parent-cart").prepend(htm);
 	})
+}
+
+
+
+let closeBtnArray = document.querySelectorAll(".close-cart")
+closeBtnArray.forEach(btn=>{
+    btn.addEventListener("click", function(e){
+        let parentElement = this.parentElement.parentElement
+        let cartProductId = parentElement.querySelector(".productIdTab .cartProductId")
+        let qty = parentElement.querySelector(".quantity .input-group .quantity")
+        
+        $.post("/deletefromcart", {productId: cartProductId.value}, (data)=>{
+            if(data.mode==="Successful"){
+                if(qty.value>1){
+                    qty.value = qty.value - 1
+                    this.setAttribute("data-dismiss", "")
+                }else if(qty.value==1){
+                    this.setAttribute("data-dismiss", "alert")
+                    $(this).click();
+                }
+            }else{
+                alert("An error Occured")
+            }
+        })
+    })
+})
+
+function deleteFromCart(productId){
+    
 }

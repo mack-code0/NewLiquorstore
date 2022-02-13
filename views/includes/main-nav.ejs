@@ -4,8 +4,11 @@
       <div class="order-lg-last btn-group">
       <a href="#" class="btn-cart dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="flaticon-shopping-bag"></span>
-          <div class="d-flex justify-content-center align-items-center"><small id="totalCart"><%= totalCartQuantity %></small></div>
+          <% if(totalCartQuantity){ %> 
+            <div class="d-flex justify-content-center align-items-center"><small id="totalCart"><%= totalCartQuantity %></small></div>
+          <% } %> 
       </a>
+      <% if(topNavCart){ %> 
       <div class="dropdown-menu topNavCart dropdown-menu-right parent-cart">
           <% for(product of topNavCart){ %> 
                 <div class="items-in-cart dropdown-item d-flex align-items-start" href="#">
@@ -20,7 +23,8 @@
                     View All
                     <span class="ion-ios-arrow-round-forward"></span>
                 </a>
-              </div>
+        </div>
+        <% } %> 
     </div>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">

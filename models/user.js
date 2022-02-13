@@ -34,10 +34,23 @@ userSchema.methods.addToCart = function(productId){
     })
 }
 
-userSchema.methods.topNavCart = function(){
-    return this.populate("cart.productId", "title unitprice imageurl -_id")
+userSchema.methods.deleteFromCart = function(productId){
+    let newCart = this.cart
+    const productIndex = this.cart.findIndex(p=>p.productId.toString()===productId.toString())
+    if(newCart[productIndex].quantity>1){
+        newCart[productIndex].quantity --
+    }else{
+        newCart = this.cart.filter(p=>p.productId.toString()!==productId.toString())
+    }
+    this.cart = newCart
+    return this.save()
+}
+
+
+userSchema.methods.getCart = function(){
+    return this.populate("cart.productId", "imageurl description unitprice title")
     .then(user=>{
-        return user.cart.slice(-3)
+        return user.cart
     })
     .catch(err=>{
         console.log(err);
