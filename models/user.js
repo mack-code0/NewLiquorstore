@@ -1,6 +1,8 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
+const getTotalCartQuantity = require("../utils/getTotalCartQuantity")
+
 const userSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
@@ -13,24 +15,31 @@ const userSchema = new Schema({
 })
 
 userSchema.methods.addToCart = function(productId){
-    const emptyCart = this.cart
-    const checkProductIndex = emptyCart.findIndex(p=>p.productId.toString()==productId.toString())
+    const updatedCart = this.cart
+    const checkProductIndex = updatedCart.findIndex(p=>p.productId.toString()==productId.toString())
     if(checkProductIndex >= 0){
-        emptyCart[checkProductIndex].quantity = emptyCart[checkProductIndex].quantity + 1
+        const productQuantity = updatedCart[checkProductIndex].quantity + 1
+        updatedCart.splice(checkProductIndex, 1)
+        updatedCart.push({productId, quantity: productQuantity})
     }else{
-        emptyCart.push({productId, quantity: 1})
+        updatedCart.push({productId, quantity: 1})
     }
-
-    let totalQuantity = 0
-    emptyCart.forEach(element => {
-        totalQuantity = totalQuantity + element.quantity
-    });
     
-    this.cart = emptyCart
+    this.cart = updatedCart
     return this.save()
     .then(result=>{
-        return {totalQuantity}
+        return {totalQuantity: getTotalCartQuantity(this.cart)}
     }).catch(err=>{
+        console.log(err);
+    })
+}
+
+userSchema.methods.topNavCart = function(){
+    return this.populate("cart.productId", "title unitprice imageurl -_id")
+    .then(user=>{
+        return user.cart.slice(-3)
+    })
+    .catch(err=>{
         console.log(err);
     })
 }

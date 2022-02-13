@@ -1,14 +1,16 @@
 const Product = require("./../models/product")
+const getTotalCartQuantity = require("../utils/getTotalCartQuantity")
 
 exports.home = (req, res)=>{
     Product.find()
     .then(products=>{
-        let totalCartQuantity = 0;
-        req.user.cart.forEach(product => {
-            totalCartQuantity = totalCartQuantity + product.quantity
-        });
-
-        res.render("index", {path: "/", products, totalCartQuantity})
+        req.user.topNavCart()
+        .then(topNavCart=>{
+            res.render("index", {
+                path: "/", products,
+                totalCartQuantity: getTotalCartQuantity(req.user.cart),
+                topNavCart: topNavCart.reverse()})
+        })
     })
 }
 
@@ -25,5 +27,14 @@ exports.products = (req, res)=>{
 }
 
 exports.cart = (req, res)=>{
-    res.render("cart", {path: "/cart"})
+    Product.find()
+    .then(products=>{
+        req.user.topNavCart()
+        .then(topNavCart=>{
+            res.render("cart", {
+                path: "/cart", products,
+                totalCartQuantity: getTotalCartQuantity(req.user.cart),
+                topNavCart: topNavCart.reverse()})
+        })
+    })
 }
