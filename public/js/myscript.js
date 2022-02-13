@@ -37,7 +37,8 @@ closeBtnArray.forEach(btn=>{
     btn.addEventListener("click", function(e){
         let parentElement = this.parentElement.parentElement
         let cartProductId = parentElement.querySelector(".productIdTab .cartProductId")
-        let qty = parentElement.querySelector(".quantity .input-group .quantity")
+        let qty = parentElement.querySelector(".productQuantity .input-group .quantity")
+
         
         $.post("/deletefromcart", {productId: cartProductId.value}, (data)=>{
             if(data.mode==="Successful"){
@@ -48,13 +49,18 @@ closeBtnArray.forEach(btn=>{
                     this.setAttribute("data-dismiss", "alert")
                     $(this).click();
                 }
+                let totalProductPrice = parentElement.querySelector(".productUnitPrice").innerHTML.substring(1) * qty.value
+                parentElement.querySelector(".productTotalPrice").innerHTML = `$${totalProductPrice}`
+                
+                let totalCartPrice = 0;
+                document.querySelectorAll(".productTotalPrice").forEach(e=>{
+                    totalCartPrice = +e.innerHTML.substring(1) + totalCartPrice
+                })
+                $(".subTotalCartValue").text(`$${totalCartPrice}.00`)
+                $(".totalCartValue").text(`$${totalCartPrice}.00`)
             }else{
                 alert("An error Occured")
             }
         })
     })
 })
-
-function deleteFromCart(productId){
-    
-}
