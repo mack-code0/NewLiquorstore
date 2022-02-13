@@ -4,7 +4,6 @@ addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
         $.post("/addtocart", {productId: this.querySelector(".productId").innerHTML}, (data)=>{
             if(data.mode=="Successful"){
-                console.log("Got here");
                 cartItems.innerHTML = data.totalCartQuantity
                 showCart(data.topNavCart)
                 alert("Added")
@@ -15,6 +14,8 @@ addBtn.forEach(btn=>{
         })
     })
 })
+
+
 
 function showCart(response){
 	$(".items-in-cart").remove()
@@ -63,4 +64,11 @@ closeBtnArray.forEach(btn=>{
             }
         })
     })
+})
+
+
+
+
+document.querySelector(".create-order").addEventListener("click", (e)=>{
+    document.getElementById('create-order').submit();
 })

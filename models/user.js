@@ -47,14 +47,4 @@ userSchema.methods.deleteFromCart = function(productId){
 }
 
 
-userSchema.methods.getCart = function(){
-    return this.populate("cart.productId", "imageurl description unitprice title")
-    .then(user=>{
-        return user.cart
-    })
-    .catch(err=>{
-        console.log(err);
-    })
-}
-
 module.exports = mongoose.model("User", userSchema)

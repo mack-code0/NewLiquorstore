@@ -9,9 +9,9 @@ const orderSchema = new Schema({
             quantity: {type: Number, required: true}
         }
     ],
-    userId: {
+    user: {
         email: {type: String, required: true},
-        userId: {type: Schema.Types.ObjectId, required: true}
+        userid: {type: Schema.Types.ObjectId, required: true}
     }
 })
 
