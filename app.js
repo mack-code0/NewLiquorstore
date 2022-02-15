@@ -1,35 +1,62 @@
 const express = require('express')
-const path = require('path')
-const app = express()
+
 const mongoose = require("mongoose")
-const User = require("./models/user")
+const session = require("express-session")
+const MongoDbStore = require("connect-mongodb-session")(session)
+const MONGODB_URI = "mongodb://127.0.0.1:27017/dashboard"
+
+
+const app = express()
+const Store = new MongoDbStore({
+    uri: MONGODB_URI,
+    collection: "sessions"
+})
+
+
+
 const rootDir = require("./utils/rootDir")
+const path = require('path')
+
+const User = require("./models/user")
 const GetRoutes = require("./routes/getRoutes")
 const PostRoutes = require("./routes/postRoutes")
+const AuthRoutes = require("./routes/authRoutes")
 
 
 app.set("view engine", "ejs")
 
 
+app.use(session({
+    secret: "This is my secret",
+    resave: false,
+    saveUninitialized: false,
+    store: Store
+}))
 app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(rootDir, "public")))
 
 
 app.use((req, res, next)=>{
-    User.findById("62077cfe2611ecdb57abd217")
-    .then(user=>{
+    if(!req.session.user){
+        return next()
+    }
+    User.findById(req.session.user._id)
+    .then((user) => {
         req.user = user
         next()
-    })
+    }).catch((err) => {
+        console.log(err);
+    });
 })
 
 
 // Routes
+app.use(AuthRoutes)
 app.use(GetRoutes)
 app.use(PostRoutes)
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/dashboard")
+mongoose.connect(MONGODB_URI)
 .then(result=>{
     User.findOne()
     .then(user=>{

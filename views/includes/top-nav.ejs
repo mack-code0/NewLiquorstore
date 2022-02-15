@@ -17,7 +17,18 @@
                 </p>
         </div>
         <div class="reg">
-            <p class="mb-0"><a href="#" class="mr-2">Sign Up</a> <a href="#">Log In</a></p>
+
+            <p class="mb-0">
+                <% if(!isAuthenticated){ %> 
+                    <a href="#" class="mr-2">Sign Up</a>
+                    <a href="/login">Log In</a>
+                <% } %> 
+                <% if(isAuthenticated){ %> 
+                    <form action="/logout" style="height: 0" method="post">
+                        <button style="border: none; background: none; padding: 0" type="submit"><a>Log Out</a></button>
+                    </form>
+                <% } %> 
+            </p>
         </div>
             </div>
         </div>

@@ -8040,9 +8040,9 @@ h1, h2, h3, h4, h5,
     .wrap .reg {
       width: 50%;
       text-align: right; } }
-  .wrap .reg p {
+  .wrap .reg p, .wrap .reg form button a {
     font-weight: 200; }
-    .wrap .reg p a {
+    .wrap .reg p a, .wrap .reg form button a {
       color: rgba(255, 255, 255, 0.8);
       text-transform: uppercase;
       font-size: 13px; }

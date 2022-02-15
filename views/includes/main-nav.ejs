@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
       <a class="navbar-brand" href="/">Liquor <span>store</span></a>
+      <% if(isAuthenticated){ %> 
       <div class="order-lg-last btn-group">
       <a href="#" class="btn-cart dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="flaticon-shopping-bag"></span>
@@ -26,6 +27,7 @@
         </div>
         <% } %> 
     </div>
+    <% } %> 
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="oi oi-menu"></span> Menu
