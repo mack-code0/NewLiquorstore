@@ -1,9 +1,13 @@
-$.get("/gettopnavcart", (data)=>{
-    if(!data.error){
-        showCart(data.topNavCart, data.totalCartQuantity)
-    }
-})
+// Loads top navCart and quantity as page reloads
+if(typeof cartPath === "undefined"){
+    $.get("/gettopnavcart", (data)=>{
+        if(!data.error){
+            showCart(data.topNavCart, data.totalCartQuantity)
+        }
+    })
+}
 
+// Add-to-cart button
 let addBtn = document.querySelectorAll(".add-to-cart")
 addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
@@ -20,7 +24,7 @@ addBtn.forEach(btn=>{
 })
 
 
-
+// Function for displaying top-nav-cart after sucessfully adding to cart
 function showCart(cart, quantity){
 	$(".items-in-cart").remove()
 	cart.forEach(element=>{
@@ -37,43 +41,45 @@ function showCart(cart, quantity){
 }
 
 
+// Button For deleting product from cart
+if(typeof cartPath !== "undefined" && cartPath === "/cart"){
+    let closeBtnArray = document.querySelectorAll(".close-cart")
+    closeBtnArray.forEach(btn=>{
+        btn.addEventListener("click", function(e){
+            let parentElement = this.parentElement.parentElement
+            let cartProductId = parentElement.querySelector(".productIdTab .cartProductId")
+            let qty = parentElement.querySelector(".productQuantity .input-group .quantity")
 
-let closeBtnArray = document.querySelectorAll(".close-cart")
-closeBtnArray.forEach(btn=>{
-    btn.addEventListener("click", function(e){
-        let parentElement = this.parentElement.parentElement
-        let cartProductId = parentElement.querySelector(".productIdTab .cartProductId")
-        let qty = parentElement.querySelector(".productQuantity .input-group .quantity")
-
-        
-        $.post("/deletefromcart", {productId: cartProductId.value}, (data)=>{
-            if(data.mode==="Successful"){
-                if(qty.value>1){
-                    qty.value = qty.value - 1
-                    this.setAttribute("data-dismiss", "")
-                }else if(qty.value==1){
-                    this.setAttribute("data-dismiss", "alert")
-                    $(this).click();
+            
+            $.post("/deletefromcart", {productId: cartProductId.value}, (data)=>{
+                if(data.mode==="Successful"){
+                    if(qty.value>1){
+                        qty.value = qty.value - 1
+                        this.setAttribute("data-dismiss", "")
+                    }else if(qty.value==1){
+                        this.setAttribute("data-dismiss", "alert")
+                        $(this).click();
+                    }
+                    let totalProductPrice = parentElement.querySelector(".productUnitPrice").innerHTML.substring(1) * qty.value
+                    parentElement.querySelector(".productTotalPrice").innerHTML = `$${totalProductPrice}`
+                    
+                    let totalCartPrice = 0;
+                    document.querySelectorAll(".productTotalPrice").forEach(e=>{
+                        totalCartPrice = +e.innerHTML.substring(1) + totalCartPrice
+                    })
+                    $(".subTotalCartValue").text(`$${totalCartPrice}.00`)
+                    $(".totalCartValue").text(`$${totalCartPrice}.00`)
+                }else{
+                    alert("An error Occured")
                 }
-                let totalProductPrice = parentElement.querySelector(".productUnitPrice").innerHTML.substring(1) * qty.value
-                parentElement.querySelector(".productTotalPrice").innerHTML = `$${totalProductPrice}`
-                
-                let totalCartPrice = 0;
-                document.querySelectorAll(".productTotalPrice").forEach(e=>{
-                    totalCartPrice = +e.innerHTML.substring(1) + totalCartPrice
-                })
-                $(".subTotalCartValue").text(`$${totalCartPrice}.00`)
-                $(".totalCartValue").text(`$${totalCartPrice}.00`)
-            }else{
-                alert("An error Occured")
-            }
+            })
         })
     })
-})
 
 
 
-
-document.querySelector(".create-order").addEventListener("click", (e)=>{
-    document.getElementById('create-order').submit();
-})
+    // Button for submitting orders
+    document.querySelector(".create-order").addEventListener("click", (e)=>{
+        document.getElementById('create-order').submit();
+    })
+}

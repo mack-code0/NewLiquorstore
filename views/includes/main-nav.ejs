@@ -5,23 +5,27 @@
         <div class="order-lg-last btn-group">
             <a href="#" class="btn-cart dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="flaticon-shopping-bag"></span>
+                <% if(path!=="/cart"){ %> 
                   <div class="d-flex justify-content-center align-items-center"><small id="totalCart"></small></div>
+                <% } %> 
             </a>
 
-            <div class="dropdown-menu topNavCart dropdown-menu-right parent-cart">
-                    <div class="items-in-cart dropdown-item d-flex align-items-start" href="#">
-                        <div class="img" style="background-image: url('');"></div>
-                        <div class="text pl-3">
-                            <h4></h4>
-                            <p class="mb-0"><a href="#" class="price"></a><span class="quantity ml-3">Quantity: 0</span></p>
-                        </div>
-                    </div>
+            <% if(path!=="/cart"){ %> 
+              <div class="dropdown-menu topNavCart dropdown-menu-right parent-cart">
+                      <div class="items-in-cart dropdown-item d-flex align-items-start" href="#">
+                          <div class="img" style="background-image: url('');"></div>
+                          <div class="text pl-3">
+                              <h4></h4>
+                              <p class="mb-0"><a href="#" class="price"></a><span class="quantity ml-3">Quantity: 0</span></p>
+                          </div>
+                      </div>
 
-                    <a class="dropdown-item text-center btn-link d-block w-100" href="/cart">
-                        View All
-                        <span class="ion-ios-arrow-round-forward"></span>
-                    </a>
-            </div>
+                      <a class="dropdown-item text-center btn-link d-block w-100" href="/cart">
+                          View All
+                          <span class="ion-ios-arrow-round-forward"></span>
+                      </a>
+              </div>
+            <% } %> 
         </div>
     <% } %> 
 
