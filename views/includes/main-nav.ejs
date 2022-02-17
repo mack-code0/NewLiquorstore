@@ -2,31 +2,27 @@
     <div class="container">
       <a class="navbar-brand" href="/">Liquor <span>store</span></a>
       <% if(isAuthenticated){ %> 
-      <div class="order-lg-last btn-group">
-      <a href="#" class="btn-cart dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="flaticon-shopping-bag"></span>
-          <% if(totalCartQuantity!=null){ %> 
-            <div class="d-flex justify-content-center align-items-center"><small id="totalCart"><%= totalCartQuantity %></small></div>
-          <% } %> 
-      </a>
-      <% if(topNavCart!=null){ %> 
-      <div class="dropdown-menu topNavCart dropdown-menu-right parent-cart">
-          <% for(product of topNavCart){ %> 
-                <div class="items-in-cart dropdown-item d-flex align-items-start" href="#">
-                    <div class="img" style="background-image: url('<%= product.productId.imageurl %>');"></div>
-                    <div class="text pl-3">
-                        <h4><%= product.productId.title %></h4>
-                        <p class="mb-0"><a href="#" class="price">$<%= product.productId.unitprice %></a><span class="quantity ml-3">Quantity: 0<%= product.quantity %></span></p>
+        <div class="order-lg-last btn-group">
+            <a href="#" class="btn-cart dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="flaticon-shopping-bag"></span>
+                  <div class="d-flex justify-content-center align-items-center"><small id="totalCart"></small></div>
+            </a>
+
+            <div class="dropdown-menu topNavCart dropdown-menu-right parent-cart">
+                    <div class="items-in-cart dropdown-item d-flex align-items-start" href="#">
+                        <div class="img" style="background-image: url('');"></div>
+                        <div class="text pl-3">
+                            <h4></h4>
+                            <p class="mb-0"><a href="#" class="price"></a><span class="quantity ml-3">Quantity: 0</span></p>
+                        </div>
                     </div>
-                </div>
-            <% } %> 
-                <a class="dropdown-item text-center btn-link d-block w-100" href="/cart">
-                    View All
-                    <span class="ion-ios-arrow-round-forward"></span>
-                </a>
+
+                    <a class="dropdown-item text-center btn-link d-block w-100" href="/cart">
+                        View All
+                        <span class="ion-ios-arrow-round-forward"></span>
+                    </a>
+            </div>
         </div>
-        <% } %> 
-    </div>
     <% } %> 
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">

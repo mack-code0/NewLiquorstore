@@ -1,26 +1,17 @@
 const Product = require("./../models/product")
 const getTotalCartQuantity = require("../utils/getTotalCartQuantity")
 
-exports.home = (req, res)=>{
+exports.home = (req, res, next)=>{
     Product.find()
     .then(products=>{
-        let cart;
-        if(req.session.user){
-            req.user.populateCart()
-            .then(us=>{
-                console.log(us);
-            })
-        }
-        console.log("----------------");
-        console.log(req.session.user)
-        console.log(cart);
-        console.log("----------------");
         res.render("index", {
-                path: "/", products,
-                totalCartQuantity: getTotalCartQuantity(cart),
-                topNavCart: cart.slice(-3).reverse(),
-                isAuthenticated: req.session.isLoggedIn
+            path: "/",
+            products,
+            isAuthenticated: req.session.isLoggedIn
         })
+    })
+    .catch(err=>{
+        console.log(err);
     })
 }
 
@@ -39,9 +30,29 @@ exports.contact = (req, res)=>{
 }
 
 exports.products = (req, res)=>{
-    res.render("products", {
-        path: "/products",
-        isAuthenticated: req.session.isLoggedIn
+    Product.find()
+    .then(products=>{
+        res.render("products", {
+            path: "/products",
+            products,
+            isAuthenticated: req.session.isLoggedIn
+        })
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+}
+
+exports.singleProduct = (req, res, next)=>{
+    Product.findById(req.body.productId)
+    .then(product=>{
+        res.render("product-single", {
+            path: "/products",
+            product,
+            isAuthenticated: req.session.isLoggedIn
+        })
+    }).catch(err=>{
+        console.log(err);
     })
 }
 
@@ -51,12 +62,26 @@ exports.cart = (req, res)=>{
     .then(user=>{
         res.render("cart", {
             path: "/cart",
-            totalCartQuantity: null,
             cart: user.cart,
-            topNavCart: null,
             isAuthenticated: req.session.isLoggedIn
         })
     }).catch(err=>{
         console.log(err);
     })
+}
+
+
+exports.getTopNavCart = (req, res, next)=>{
+    if(req.session.user){
+        req.user
+        .populate("cart.productId", "imageurl description unitprice title -_id")
+        .then(user=>{
+            res.json({
+                topNavCart: user.cart.slice(-3),
+                totalCartQuantity: getTotalCartQuantity(user.cart)
+            })
+        })
+    }else{
+        res.json({error: "An Error Occured"})
+    }
 }

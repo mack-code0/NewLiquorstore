@@ -1,11 +1,15 @@
-let cartItems = document.getElementById("totalCart")
+$.get("/gettopnavcart", (data)=>{
+    if(!data.error){
+        showCart(data.topNavCart, data.totalCartQuantity)
+    }
+})
+
 let addBtn = document.querySelectorAll(".add-to-cart")
 addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
         $.post("/addtocart", {productId: this.querySelector(".productId").innerHTML}, (data)=>{
             if(data.mode=="Successful"){
-                cartItems.innerHTML = data.totalCartQuantity
-                showCart(data.topNavCart)
+                showCart(data.topNavCart, data.totalCartQuantity)
                 alert("Added")
             }else{
                 console.log("Got here 1");
@@ -17,18 +21,19 @@ addBtn.forEach(btn=>{
 
 
 
-function showCart(response){
+function showCart(cart, quantity){
 	$(".items-in-cart").remove()
-	response.forEach(element=>{
+	cart.forEach(element=>{
 		var htm = '<div class="dropdown-item d-flex align-items-start items-in-cart" href="#">'
 	    	+'<div class="img" style="background-image: url('+element.productId.imageurl+');"></div>'
 	    	+'<div class="text pl-3">'
 	    		+'<h4>'+element.productId.title+'</h4>'
-	    		+'<p class="mb-0"><a href="#" class="price">$'+element.productId.unitprice+'</a><span class="quantity ml-3">Quantity: '+element.quantity+'</span></p>'
+	    		+'<p class="mb-0"><a href="#" class="price">$'+element.productId.unitprice+'</a><span class="quantity ml-3">Quantity: 0'+element.quantity+'</span></p>'
 	    	+'</div>'
 	    +'</div>'
 		$(".parent-cart").prepend(htm);
 	})
+    document.getElementById("totalCart").innerHTML = quantity
 }
 
 
