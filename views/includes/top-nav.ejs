@@ -20,11 +20,12 @@
 
             <p class="mb-0">
                 <% if(!isAuthenticated){ %> 
-                    <a href="#" class="mr-2">Sign Up</a>
+                    <a href="/signup" class="mr-2">Sign Up</a>
                     <a href="/login">Log In</a>
                 <% } %> 
                 <% if(isAuthenticated){ %> 
                     <form action="/logout" style="height: 0" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button style="border: none; background: none; padding: 0" type="submit"><a>Log Out</a></button>
                     </form>
                 <% } %> 

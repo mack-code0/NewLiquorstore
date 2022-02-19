@@ -11,7 +11,10 @@ if(typeof cartPath === "undefined"){
 let addBtn = document.querySelectorAll(".add-to-cart")
 addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
-        $.post("/addtocart", {productId: this.querySelector(".productId").innerHTML}, (data)=>{
+        $.post("/addtocart", {
+            productId: this.querySelector(".productId").innerHTML,
+            _csrf: this.querySelector(".csrfToken").innerHTML
+        }, (data)=>{
             if(data.mode=="Successful"){
                 showCart(data.topNavCart, data.totalCartQuantity)
                 alert("Added")

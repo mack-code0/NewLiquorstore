@@ -6,8 +6,7 @@ exports.home = (req, res, next)=>{
     .then(products=>{
         res.render("index", {
             path: "/",
-            products,
-            isAuthenticated: req.session.isLoggedIn
+            products
         })
     })
     .catch(err=>{
@@ -17,15 +16,13 @@ exports.home = (req, res, next)=>{
 
 exports.about = (req, res)=>{
     res.render("about", {
-        path: "/about",
-        isAuthenticated: req.session.isLoggedIn
+        path: "/about"
     })
 }
 
 exports.contact = (req, res)=>{
     res.render("contact", {
-        path: "/contact",
-        isAuthenticated: req.session.isLoggedIn
+        path: "/contact"
     })
 }
 
@@ -34,8 +31,7 @@ exports.products = (req, res)=>{
     .then(products=>{
         res.render("products", {
             path: "/products",
-            products,
-            isAuthenticated: req.session.isLoggedIn
+            products
         })
     })
     .catch(err=>{
@@ -48,8 +44,7 @@ exports.singleProduct = (req, res, next)=>{
     .then(product=>{
         res.render("product-single", {
             path: "/products",
-            product,
-            isAuthenticated: req.session.isLoggedIn
+            product
         })
     }).catch(err=>{
         console.log(err);
@@ -62,8 +57,7 @@ exports.cart = (req, res)=>{
     .then(user=>{
         res.render("cart", {
             path: "/cart",
-            cart: user.cart,
-            isAuthenticated: req.session.isLoggedIn
+            cart: user.cart
         })
     }).catch(err=>{
         console.log(err);

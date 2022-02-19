@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 const getTotalCartQuantity = require("../utils/getTotalCartQuantity")
 
 const userSchema = new Schema({
-    name: {type: String, required: true},
     email: {type: String, required: true},
+    password: {type: String, required: true},
     cart: [
         {
             productId: {type: mongoose.Types.ObjectId, ref: "Product", required: true},

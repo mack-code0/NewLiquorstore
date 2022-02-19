@@ -1,10 +1,10 @@
-<%- include("./includes/header.ejs") %>
+<%- include("../includes/header.ejs") %>
   </head>
   <body>
 
-	<%- include("./includes/top-nav.ejs") %>
+	<%- include("../includes/top-nav.ejs") %>
 	
-	<%- include("./includes/main-nav.ejs") %> 
+	<%- include("../includes/main-nav.ejs") %> 
     
     <section class="hero-wrap hero-wrap-2" style="background-image: url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
@@ -23,8 +23,10 @@
     		<div class="row justify-content-center">
           <div class="col-xl-10 ftco-animate">
 
-			  <!-- <!%- include("./partials/messages.ejs")  %>  -->
-
+			  <!-- <!%- include("../partials/messages.ejs")  %>  -->
+			<% if(errorMessage){ %> 
+				<%- include("../includes/messages.ejs")  %> 
+			<% } %> 
 			<form method="POST" action="/login" class="billing-form">
 	          	<div class="row align-items-end">
 					<div class="w-100"></div>
@@ -49,6 +51,7 @@
                 	</div>
                 </div>
 				</div>
+				<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 				<button class="btn btn-primary py-3 px-5">Login</button>
 	          </form><!-- END -->
 
@@ -57,9 +60,9 @@
     	</div>
     </section>
 
-	<%- include("./includes/footer.ejs") %> 
-    <%- include("./includes/loader.ejs") %> 
-	<%- include("./includes/scripts.ejs") %> 	
+	<%- include("../includes/footer.ejs") %> 
+    <%- include("../includes/loader.ejs") %> 
+	<%- include("../includes/scripts.ejs") %> 	
     
   </body>
 </html>
