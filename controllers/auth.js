@@ -28,22 +28,22 @@ exports.postLogin = (req, res, next)=>{
     User.findOne({email: email})
     .then(user=>{
         if(!user){
+        req.flash("error", "Invalid email or password")
+        return res.redirect("/login")
+        }
+
+        bcryptjs.compare(password, user.password)
+        .then(doMatch=>{
+        if(!doMatch){
             req.flash("error", "Invalid email or password")
             return res.redirect("/login")
         }
 
-        bcryptjs.compare(password, user.password)
-        .then(isMatch=>{
-            if(!isMatch){
-                req.flash("error", "Invalid email or password")
-                return res.redirect("/login")
-            }
-
-            req.session.user = user
-            req.session.isLoggedIn = true
-            req.session.save(err=>{
-                return res.redirect("/")
-            })
+        req.session.isLoggedIn = true
+        req.session.user = user
+        req.session.save(err=>{
+            res.redirect("/")
+        })
         })
     }).catch(err=>{
         res.redirect("/")

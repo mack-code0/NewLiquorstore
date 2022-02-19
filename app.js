@@ -36,8 +36,8 @@ app.use(session({
     saveUninitialized: false,
     store: Store
 }))
-app.use(csrfProtection)
 app.use(flash())
+app.use(csrfProtection)
 
 app.use((req, res, next)=>{
     res.locals.isAuthenticated = req.session.isLoggedIn
