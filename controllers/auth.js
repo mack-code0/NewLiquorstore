@@ -4,11 +4,15 @@ const User = require("../models/user")
 exports.getLogin = (req, res, next)=>{
     const error = req.flash("error")
     const errorMessage = error.length>0?error:null
+
+    const success = req.flash("success")
+    const successMessage = success.length>0?success:null
     res.render("auth/login", {
         totalCartQuantity: null,
         topNavCart: null,
         path: "/login",
-        errorMessage: errorMessage
+        errorMessage: errorMessage,
+        successMessage: successMessage
     })
 }
 
@@ -34,16 +38,16 @@ exports.postLogin = (req, res, next)=>{
 
         bcryptjs.compare(password, user.password)
         .then(doMatch=>{
-        if(!doMatch){
-            req.flash("error", "Invalid email or password")
-            return res.redirect("/login")
-        }
-
-        req.session.isLoggedIn = true
-        req.session.user = user
-        req.session.save(err=>{
-            res.redirect("/")
-        })
+            if(!doMatch){
+                req.flash("error", "Invalid email or password")
+                return res.redirect("/login")
+            }
+            
+            req.session.isLoggedIn = true
+            req.session.user = user
+            req.session.save(err=>{
+                res.redirect("/")
+            })
         })
     }).catch(err=>{
         res.redirect("/")
@@ -65,6 +69,7 @@ exports.postSignup = (req, res, next)=>{
             return newUser.save()
         })
         .then(result=>{
+            req.flash("success", "Successfully Registered!")
             res.redirect("/login")
         })
     })  
@@ -73,6 +78,6 @@ exports.postSignup = (req, res, next)=>{
 
 exports.postLogout = (req, res, next)=>{
     req.session.destroy(err=>{
-        res.redirect("/")
+        res.redirect("/login")
     })
 }

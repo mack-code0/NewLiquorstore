@@ -54,7 +54,10 @@ if(typeof cartPath !== "undefined" && cartPath === "/cart"){
             let qty = parentElement.querySelector(".productQuantity .input-group .quantity")
 
             
-            $.post("/deletefromcart", {productId: cartProductId.value}, (data)=>{
+            $.post("/deletefromcart", {
+                productId: cartProductId.value,
+                _csrf: document.querySelector(".csrfToken").innerHTML
+            }, (data)=>{
                 if(data.mode==="Successful"){
                     if(qty.value>1){
                         qty.value = qty.value - 1

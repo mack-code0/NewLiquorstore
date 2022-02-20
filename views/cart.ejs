@@ -19,6 +19,7 @@
     </section>
 
     <section class="ftco-section">
+		<span class="d-none csrfToken"><%= csrfToken %></span>
     	<div class="container">
     		<div class="row">
     			<div class="table-wrap">
@@ -102,7 +103,9 @@
     					</p>
     				</div>
     				<p class="text-center">
-						<form action="/createorder" id="create-order" method="post"></form>
+						<form action="/createorder" id="create-order" method="post">
+							<input type="hidden" name="_csrf" value="<%= csrfToken %>">	
+						</form>
 						<a class="btn btn-primary py-3 px-4 create-order">Proceed to Checkout</a>
 					</p>
     			</div>

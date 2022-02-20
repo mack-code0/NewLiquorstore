@@ -24,8 +24,8 @@
           <div class="col-xl-10 ftco-animate">
 
 			<% if(errorMessage){ %> 
-				<%- include("../includes/messages.ejs")  %> 
-			<% } %> 
+				<%- include("../includes/message.ejs", {messageType: "danger", successMessage: null})  %> 
+			<% } %>
 			<form method="POST" action="/signup" class="billing-form">
 	          	<div class="row align-items-end">
 					<div class="w-100"></div>

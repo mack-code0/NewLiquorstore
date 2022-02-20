@@ -25,7 +25,10 @@
 
 			  <!-- <!%- include("../partials/messages.ejs")  %>  -->
 			<% if(errorMessage){ %> 
-				<%- include("../includes/messages.ejs")  %> 
+				<%- include("../includes/message.ejs", {messageType: "danger"})  %> 
+			<% } %> 
+			<% if(successMessage){ %>
+				<%- include("../includes/message.ejs", {messageType: "success"})  %>
 			<% } %> 
 			<form method="POST" action="/login" class="billing-form">
 	          	<div class="row align-items-end">
