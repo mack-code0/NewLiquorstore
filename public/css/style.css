@@ -9961,3 +9961,12 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+
+
+
+
+
+    input.form-control.invalid-input{
+      border: 1px solid #a71d2a !important;
+    }

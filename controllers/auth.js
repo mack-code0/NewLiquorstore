@@ -1,5 +1,6 @@
 const bcryptjs = require("bcryptjs")
 const User = require("../models/user")
+const { validationResult } = require("express-validator")
 
 exports.getLogin = (req, res, next)=>{
     const error = req.flash("error")
@@ -12,7 +13,9 @@ exports.getLogin = (req, res, next)=>{
         topNavCart: null,
         path: "/login",
         errorMessage: errorMessage,
-        successMessage: successMessage
+        successMessage: successMessage,
+        oldInput: {email: "", password: ""},
+        validationErrors: []
     })
 }
 
@@ -23,12 +26,28 @@ exports.getSignup = (req, res, next)=>{
         totalCartQuantity: null,
         topNavCart: null,
         path: "/signup",
-        errorMessage: errorMessage
+        errorMessage: errorMessage,
+        oldInput: {email: "", password: "", confirmPassword: ""},
+        validationErrors: []
     })
 }
 
 exports.postLogin = (req, res, next)=>{
     const {email, password} = req.body
+
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(422).render("auth/login", {
+            totalCartQuantity: null,
+            topNavCart: null,
+            path: "/login",
+            errorMessage: errors.array()[0].msg,
+            successMessage: "",
+            oldInput: {email, password},
+            validationErrors: errors.array()
+        })
+    }
+
     User.findOne({email: email})
     .then(user=>{
         if(!user){
@@ -56,23 +75,28 @@ exports.postLogin = (req, res, next)=>{
 
 exports.postSignup = (req, res, next)=>{
     const {email, password, confirmPassword} = req.body
-    User.findOne({email: email})
-    .then(user=>{
-        if(user){
-            req.flash("error", "Email is already registered! Please try another email")
-            return res.redirect("/signup")
-        }
 
-        bcryptjs.hash(password, 12)
-        .then(hashedPassword=>{
-            const newUser = new User({email, password: hashedPassword, cart: []})  
-            return newUser.save()
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(422).render("auth/signup", {
+            totalCartQuantity: null,
+            topNavCart: null,
+            path: "/signup",
+            errorMessage: errors.array()[0].msg,
+            oldInput: {email,password, confirmPassword},
+            validationErrors: errors.array()
         })
-        .then(result=>{
-            req.flash("success", "Successfully Registered!")
-            res.redirect("/login")
-        })
-    })  
+    }
+
+    bcryptjs.hash(password, 12)
+    .then(hashedPassword=>{
+        const newUser = new User({email, password: hashedPassword, cart: []})  
+        return newUser.save()
+    })
+    .then(result=>{
+        req.flash("success", "Successfully Registered!")
+        res.redirect("/login")
+    }) 
     .catch(err=>console.log(err))
 }
 
