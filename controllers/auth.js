@@ -12,6 +12,7 @@ exports.getLogin = (req, res, next)=>{
         totalCartQuantity: null,
         topNavCart: null,
         path: "/login",
+        pageTitle: "Login",
         errorMessage: errorMessage,
         successMessage: successMessage,
         oldInput: {email: "", password: ""},
@@ -26,6 +27,7 @@ exports.getSignup = (req, res, next)=>{
         totalCartQuantity: null,
         topNavCart: null,
         path: "/signup",
+        pageTitle: "Signup",
         errorMessage: errorMessage,
         oldInput: {email: "", password: "", confirmPassword: ""},
         validationErrors: []
@@ -52,7 +54,7 @@ exports.postLogin = (req, res, next)=>{
     .then(user=>{
         if(!user){
         req.flash("error", "Invalid email or password")
-        return res.redirect("/login")
+            return res.redirect("/login")
         }
 
         bcryptjs.compare(password, user.password)
@@ -69,7 +71,9 @@ exports.postLogin = (req, res, next)=>{
             })
         })
     }).catch(err=>{
-        res.redirect("/")
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        next(error)
     })
 }
 
@@ -97,7 +101,11 @@ exports.postSignup = (req, res, next)=>{
         req.flash("success", "Successfully Registered!")
         res.redirect("/login")
     }) 
-    .catch(err=>console.log(err))
+    .catch(err=>{
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        next(error)
+    })
 }
 
 exports.postLogout = (req, res, next)=>{

@@ -10,7 +10,7 @@ exports.addToCart = (req, res, next)=>{
             res.json({mode: "Successful", totalCartQuantity: result.totalQuantity, topNavCart: user.cart.slice(-3)})
         })
     }).catch((err) => {
-        res.json({error: "An error occured"})
+        res.status(500).json({error: "An error occured"})
     });
 }
 
@@ -20,7 +20,7 @@ exports.deleteFromCart = (req, res, next)=>{
         res.json({mode: "Successful"})
     })
     .catch(err=>{
-        res.json({mode: "An Error Occured"})
+        res.status(500).json({mode: "An Error Occured"})
     })
 }
 
@@ -40,6 +40,8 @@ exports.createOrder = (req, res, next)=>{
     }).then(result=>{
         res.redirect("/")
     }).catch(err=>{
-        console.log(err);
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        next(error)
     })
 }

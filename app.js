@@ -51,17 +51,36 @@ app.use((req, res, next)=>{
     }
     User.findById(req.session.user._id)
     .then((user) => {
+        if(!user){
+            return next()
+        }
         req.user = user
         next()
-    }).catch((err) => {
-        console.log(err);
-    });
+    }).catch(err=>{
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        next(error)
+    })
 })
 
 // Routes
 app.use(AuthRoutes)
 app.use(GetRoutes)
 app.use(PostRoutes)
+
+app.use((req, res, next)=>{
+    res.render("errors/404", {
+        path: "/404",
+        pageTitle: "Page Not Found"
+    })
+})
+
+app.use((error, req, res, next)=>{
+    res.render("errors/500", {
+        path: "/500",
+        pageTitle: "Error"
+    })
+})
 
 
 mongoose.connect(MONGODB_URI)

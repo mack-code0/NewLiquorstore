@@ -1,11 +1,9 @@
 // Loads top navCart and quantity as page reloads
-if(typeof cartPath === "undefined"){
-    $.get("/gettopnavcart", (data)=>{
-        if(!data.error){
-            showCart(data.topNavCart, data.totalCartQuantity)
-        }
-    })
-}
+$.get("/gettopnavcart", (data)=>{
+    if(!data.error){
+        showCart(data.topNavCart, data.totalCartQuantity)
+    }
+})
 
 // Add-to-cart button
 let addBtn = document.querySelectorAll(".add-to-cart")
