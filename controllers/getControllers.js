@@ -1,8 +1,11 @@
 const Product = require("./../models/product")
 const getTotalCartQuantity = require("../utils/getTotalCartQuantity")
 
+const ITEMS_PER_PAGE = 5
+
 exports.home = (req, res, next) => {
     Product.find()
+        .limit(8)
         .then(products => {
             res.render("index", {
                 path: "/",
@@ -30,13 +33,28 @@ exports.contact = (req, res) => {
     })
 }
 
-exports.products = (req, res) => {
-    Product.find()
+exports.products = (req, res, next) => {
+    const page = typeof req.query.page === "undefined" ? 1 : req.query.page
+
+    let totalNumOfProducts;
+
+    Product.countDocuments()
+        .then(numberOfProducts => {
+            totalNumOfProducts = numberOfProducts
+            return Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+        })
         .then(products => {
             res.render("products", {
                 path: "/products",
                 pageTitle: "Products",
-                products
+                products,
+                currentPage: page,
+                lastPage: Math.ceil(totalNumOfProducts / ITEMS_PER_PAGE),
+                hasNextPage: page * ITEMS_PER_PAGE < totalNumOfProducts,
+                hasPreviousPage: page > 1,
+                numOfPages: Math.ceil(totalNumOfProducts / ITEMS_PER_PAGE)
             })
         }).catch(err => {
             const error = new Error(err)

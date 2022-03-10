@@ -76,6 +76,7 @@ app.use((req, res, next)=>{
 })
 
 app.use((error, req, res, next)=>{
+    console.log(error);
     res.render("errors/500", {
         path: "/500",
         pageTitle: "Error"
@@ -88,5 +89,5 @@ mongoose.connect(MONGODB_URI)
     app.listen(9000)
 })
 .catch(err=>{
-    console.log(err);
+    throw new Error("Error Occured")
 })
