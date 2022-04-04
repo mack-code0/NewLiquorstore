@@ -86,6 +86,7 @@ exports.postSignup = (req, res, next)=>{
             totalCartQuantity: null,
             topNavCart: null,
             path: "/signup",
+            pageTitle: "Signup",
             errorMessage: errors.array()[0].msg,
             oldInput: {email,password, confirmPassword},
             validationErrors: errors.array()
@@ -107,6 +108,7 @@ exports.postSignup = (req, res, next)=>{
         next(error)
     })
 }
+
 
 exports.postLogout = (req, res, next)=>{
     req.session.destroy(err=>{

@@ -11,7 +11,8 @@ const MONGODB_URI = "mongodb://127.0.0.1:27017/dashboard"
 const app = express()
 const Store = new MongoDbStore({
     uri: MONGODB_URI,
-    collection: "sessions"
+    collection: "sessions",
+    expires: 24 * 2 * 60 * 60000 //2 days
 })
 const csrfProtection = csrf()
 
@@ -28,7 +29,7 @@ const AuthRoutes = require("./routes/authRoutes")
 app.set("view engine", "ejs")
 
 
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(rootDir, "public")))
 app.use(session({
     secret: "This is my secret",
@@ -39,28 +40,28 @@ app.use(session({
 app.use(flash())
 app.use(csrfProtection)
 
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn
     res.locals.csrfToken = req.csrfToken()
     next()
 })
 
-app.use((req, res, next)=>{
-    if(!req.session.user){
+app.use((req, res, next) => {
+    if (!req.session.user) {
         return next()
     }
     User.findById(req.session.user._id)
-    .then((user) => {
-        if(!user){
-            return next()
-        }
-        req.user = user
-        next()
-    }).catch(err=>{
-        const error = new Error(err)
-        error.httpStatusCode = 500
-        next(error)
-    })
+        .then((user) => {
+            if (!user) {
+                return next()
+            }
+            req.user = user
+            next()
+        }).catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            next(error)
+        })
 })
 
 // Routes
@@ -68,14 +69,14 @@ app.use(AuthRoutes)
 app.use(GetRoutes)
 app.use(PostRoutes)
 
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     res.render("errors/404", {
         path: "/404",
         pageTitle: "Page Not Found"
     })
 })
 
-app.use((error, req, res, next)=>{
+app.use((error, req, res, next) => {
     console.log(error);
     res.render("errors/500", {
         path: "/500",
@@ -85,9 +86,9 @@ app.use((error, req, res, next)=>{
 
 
 mongoose.connect(MONGODB_URI)
-.then(result=>{
-    app.listen(9000)
-})
-.catch(err=>{
-    throw new Error("Error Occured")
-})
+    .then(result => {
+        app.listen(9000)
+    })
+    .catch(err => {
+        throw new Error("Error Occured")
+    })

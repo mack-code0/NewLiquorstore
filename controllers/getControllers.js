@@ -64,7 +64,7 @@ exports.products = (req, res, next) => {
 }
 
 exports.singleProduct = (req, res, next) => {
-    Product.findById(req.body.productId)
+    Product.findById(req.params.productId)
         .then(product => {
             res.render("product-single", {
                 path: "/products",

@@ -8,6 +8,7 @@ router.get('/', getController.home)
 router.get('/about', getController.about)
 router.get("/contact", getController.contact)
 router.get("/products", getController.products)
+router.get("/product/:productId", getController.singleProduct)
 router.get("/cart", isAuth, getController.cart)
 router.get("/gettopnavcart", isAuth, getController.getTopNavCart)
 

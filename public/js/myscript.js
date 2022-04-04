@@ -30,7 +30,7 @@ function showCart(cart, quantity){
 	$(".items-in-cart").remove()
 	cart.forEach(element=>{
 		var htm = '<div class="dropdown-item d-flex align-items-start items-in-cart" href="#">'
-	    	+'<div class="img" style="background-image: url('+element.productId.imageurl+');"></div>'
+	    	+'<div class="img" style="background-image: url('+element.productId.imageurl.imageurl+');"></div>'
 	    	+'<div class="text pl-3">'
 	    		+'<h4>'+element.productId.title+'</h4>'
 	    		+'<p class="mb-0"><a href="#" class="price">$'+element.productId.unitprice+'</a><span class="quantity ml-3">Quantity: 0'+element.quantity+'</span></p>'
