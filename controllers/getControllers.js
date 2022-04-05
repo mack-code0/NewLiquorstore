@@ -3,7 +3,7 @@ const Order = require("./../models/order")
 const getTotalCartQuantity = require("../utils/getTotalCartQuantity")
 const err = require("../utils/error").error_500
 
-const ITEMS_PER_PAGE = 5
+const ITEMS_PER_PAGE = 6
 
 exports.home = async (req, res, next) => {
     try {
@@ -95,8 +95,11 @@ exports.getTopNavCart = async (req, res, next) => {
 exports.getOrders = async (req, res, next) => {
     try {
         const orders = await Order.find({ "user.userId": req.user._id })
-        console.log(orders[0].items);
-        next()
+        res.render("order1", {
+            path: "/orders",
+            pageTitle: "Orders",
+            orders
+        })
     } catch (error) {
         err(error, next)
     }

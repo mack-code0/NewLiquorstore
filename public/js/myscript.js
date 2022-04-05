@@ -6,6 +6,7 @@ $.get("/gettopnavcart", (data)=>{
 })
 
 // Add-to-cart button
+let cartAlert = document.querySelector(".cart-alert")
 let addBtn = document.querySelectorAll(".add-to-cart")
 addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
@@ -17,7 +18,9 @@ addBtn.forEach(btn=>{
         }, (data)=>{
             if(data.mode=="Successful"){
                 showCart(data.topNavCart, data.totalCartQuantity)
-                alert("Added")
+                cartAlert.querySelector(".alert-prod-name").innerHTML = data.topNavCart[2].productId.title
+                cartAlert.classList.add("show")
+                setTimeout(function() {cartAlert.classList.remove("show")}, 3000);
             }else{
                 console.log("Got here 1");
                 alert("An error occured")
