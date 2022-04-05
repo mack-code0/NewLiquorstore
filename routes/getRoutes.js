@@ -11,5 +11,6 @@ router.get("/products", getController.products)
 router.get("/product/:productId", getController.singleProduct)
 router.get("/cart", isAuth, getController.cart)
 router.get("/gettopnavcart", isAuth, getController.getTopNavCart)
+router.get("/orders", isAuth, getController.getOrders)
 
 module.exports  = router

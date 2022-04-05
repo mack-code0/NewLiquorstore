@@ -1,47 +1,38 @@
 const Order = require("../models/order")
+const err = require("../utils/error").error_500
 
 
-exports.addToCart = (req, res, next)=>{
-    req.user.addToCart(req.body.productId)
-    .then((result) => {
-        return req.user
-        .populate("cart.productId", "imageurl description unitprice title")
-        .then(user=>{
-            res.json({mode: "Successful", totalCartQuantity: result.totalQuantity, topNavCart: user.cart.slice(-3)})
-        })
-    }).catch((err) => {
-        res.status(500).json({error: "An error occured"})
-    });
+exports.addToCart = async (req, res, next) => {
+    try {
+        const result = req.user.addToCart(req.body.productId)
+        const user =  req.user.populate("cart.productId", "imageurl description unitprice title")
+        res.json({ mode: "Successful", totalCartQuantity: result.totalQuantity, topNavCart: user.cart.slice(-3) })
+    } catch (error) {
+        err(error, next)
+    }
 }
 
-exports.deleteFromCart = (req, res, next)=>{
-    req.user.deleteFromCart(req.body.productId)
-    .then(result=>{
-        res.json({mode: "Successful"})
-    })
-    .catch(err=>{
-        res.status(500).json({mode: "An Error Occured"})
-    })
+exports.deleteFromCart = async (req, res, next) => {
+    try {
+        await req.user.deleteFromCart(req.body.productId)
+        res.json({ mode: "Successful" })
+    } catch (error) {
+        err(error, next)
+    }
 }
 
-exports.createOrder = (req, res, next)=>{
-    req.user
-    .populate("cart.productId")
-    .then(user=>{
-        const newArr = user.cart.map(p=>{
-            return {product: {...p.productId.toJSON()}, quantity: p.quantity}
+exports.createOrder = async (req, res, next) => {
+    try {
+        const user = await req.user.populate("cart.productId")
+        const newArr = user.cart.map(p => {
+            return { product: { ...p.productId.toJSON() }, quantity: p.quantity }
         })
-        const newOrder = new Order({items: [...newArr], user: {email: user.email, userid: req.user}})
-        return newOrder.save()
-        .then(result=>{
-            req.user.cart = []
-            return req.user.save()
-        })
-    }).then(result=>{
+        const newOrder = new Order({ items: [...newArr], user: { email: user.email, userid: req.user } })
+        await newOrder.save()
+        req.user.cart = []
+        await req.user.save()
         res.redirect("/")
-    }).catch(err=>{
-        const error = new Error(err)
-        error.httpStatusCode = 500
-        next(error)
-    })
+    } catch (error) {
+        err(error, next)
+    }
 }

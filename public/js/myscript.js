@@ -9,6 +9,8 @@ $.get("/gettopnavcart", (data)=>{
 let addBtn = document.querySelectorAll(".add-to-cart")
 addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
+        console.log(this.querySelector(".productId").innerHTML);
+        console.log(this.querySelector(".csrfToken").innerHTML);
         $.post("/addtocart", {
             productId: this.querySelector(".productId").innerHTML,
             _csrf: this.querySelector(".csrfToken").innerHTML

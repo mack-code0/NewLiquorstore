@@ -39,6 +39,9 @@
           <li class="nav-item <%= path=='/about'?'active':'' %>"><a href="/about" class="nav-link">About</a></li>
           <li class="nav-item <%= path=='/products'?'active':'' %>"><a href="/products" class="nav-link">Products</a></li>
           <li class="nav-item <%= path=='/contact'?'active':'' %>"><a href="/contact" class="nav-link">Contact</a></li>
+          <% if(isAuthenticated){ %>
+            <li class="nav-item <%= path=='/orders'?'active':'' %>"><a href="/orders" class="nav-link">Orders</a></li>
+          <% } %>   
           <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
           <div class="dropdown-menu" aria-labelledby="dropdown04">

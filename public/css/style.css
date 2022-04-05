@@ -9970,3 +9970,90 @@ textarea.form-control {
     input.form-control.invalid-input{
       border: 1px solid #a71d2a !important;
     }
+
+    .checkout-body{
+      background-color: #f5f5f5;
+    }
+    .main-container{
+      width: 60%;
+    }
+    #co-text{
+      font-weight: 500;
+      color: #686868;
+    }
+    .address, .delivery, .payment-method{
+      background-color: #ffffff;
+      border-radius: 5px;
+    }
+    .address-top, .delivery-top, .payment-method-top{
+      border-bottom: 1px solid #ebebeb;
+    }
+    .my-border{
+      width: 90%;
+      border-top: 1px solid #ebebeb;
+    }
+    .small-grey{
+      font-size: 13px;
+      font-weight: bolder;
+      color: #686868;
+    }
+    .dark-grey{
+      font-size: 14px;
+      font-weight: bolder;
+      color: #2e2e2e;
+    }
+    .delivery-date{
+      color: #000000;
+    }
+    .box-heading{
+      color: #000000;
+      font-weight: bolder;
+    }
+    .checkout-btn .btn, .add-voucher, .continue-btn{
+      background-color: #b7472a !important;
+      color: #ffffff !important;
+      border-radius: 0 !important;
+      font-weight: 500;
+    }
+    .continue-btn-i{
+      color: #b7472a !important;
+      background-color: #ffffff !important;
+      border-radius: 0 !important;
+      font-weight: 500;
+    }
+    .continue-btn-i:hover ~.continue-btn{
+      color: #b7472a !important;
+      background-color: #ffffff !important;
+    }
+    .continue-btn-i:hover{
+      background-color: #b7472a !important;
+      color: #ffffff !important;
+    }
+    
+    .enter-voucher{
+      border-color: #ebebeb;
+      border-radius: 0;
+    }
+    .enter-voucher:focus{
+      box-shadow: none !important;
+      border-color: #ebebeb;
+      border-radius: 0;
+    }
+    
+    .white-bg{
+      background-color: #fff;
+    }
+    
+    @media screen and (max-width: 660px){
+      .main-container{
+          width: 90%;
+          padding-top: 10px;
+          padding-bottom: 10px;
+      }
+    }
+    
+    @media screen and (max-width: 1078px){
+      .add-voucher{
+          font-size: 0.5rem;
+      }
+    }
