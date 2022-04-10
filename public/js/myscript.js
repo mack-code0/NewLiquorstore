@@ -6,21 +6,22 @@ $.get("/gettopnavcart", (data)=>{
 })
 
 // Add-to-cart button
+let timeid = 0
 let cartAlert = document.querySelector(".cart-alert")
 let addBtn = document.querySelectorAll(".add-to-cart")
 addBtn.forEach(btn=>{
     btn.addEventListener("click", function(){
-        console.log(this.querySelector(".productId").innerHTML);
-        console.log(this.querySelector(".csrfToken").innerHTML);
         $.post("/addtocart", {
             productId: this.querySelector(".productId").innerHTML,
             _csrf: this.querySelector(".csrfToken").innerHTML
         }, (data)=>{
             if(data.mode=="Successful"){
+                clearTimeout(timeid)
                 showCart(data.topNavCart, data.totalCartQuantity)
-                cartAlert.querySelector(".alert-prod-name").innerHTML = data.topNavCart[2].productId.title
+                const alertTime = 3000
+                cartAlert.querySelector(".alert-prod-name").innerHTML = data.topNavCart[data.topNavCart.length-1].productId.title
                 cartAlert.classList.add("show")
-                setTimeout(function() {cartAlert.classList.remove("show")}, 3000);
+                timeid = setTimeout(function() {cartAlert.classList.remove("show")}, alertTime);
             }else{
                 console.log("Got here 1");
                 alert("An error occured")

@@ -14,9 +14,9 @@
                         <div class="row no-gutters slider-text align-items-end justify-content-center">
                             <div class="col-md-9 ftco-animate mb-5 text-center">
                                 <p class="breadcrumbs mb-0"><span class="mr-2"><a href="index.html">Home <i
-                                                class="fa fa-chevron-right"></i></a></span> <span>Cart <i
+                                                class="fa fa-chevron-right"></i></a></span> <span>Orders <i
                                             class="fa fa-chevron-right"></i></span></p>
-                                <h2 class="mb-0 bread">My Cart</h2>
+                                <h2 class="mb-0 bread">My Orders</h2>
                             </div>
                         </div>
                     </div>
@@ -29,6 +29,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="table-wrap">
+                                <% if(orders.length > 0){ %> 
                                 <% for(let order of orders){ %>
                                     <table class="table" style="margin-bottom: 100px;">
                                         <thead class="thead-primary">
@@ -65,6 +66,9 @@
                                         </tbody>
                                     </table>
                                     <% } %>
+                                    <% }else{ %>
+                                        <h1>No Orders Yet</h1>
+                                    <% } %> 
                             </div>
                         </div>
 

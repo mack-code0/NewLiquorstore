@@ -7,7 +7,7 @@ const ITEMS_PER_PAGE = 6
 
 exports.home = async (req, res, next) => {
     try {
-        const products = await Product.find().limit(8)
+        const products = await Product.find().limit(9)
         res.render("index", {
             path: "/",
             pageTitle: "LiquorStore",
@@ -34,9 +34,10 @@ exports.contact = (req, res) => {
 
 exports.products = async (req, res, next) => {
     const page = typeof req.query.page === "undefined" ? 1 : req.query.page
+    const category = new RegExp(req.query.category, "i")
     try {
-        const totalNumOfProducts = await Product.countDocuments()
-        const products = await Product.find().skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
+        const totalNumOfProducts = await Product.countDocuments({ category })
+        const products = await Product.find({ category }).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
         res.render("products", {
             path: "/products",
             pageTitle: "Products",
@@ -95,6 +96,7 @@ exports.getTopNavCart = async (req, res, next) => {
 exports.getOrders = async (req, res, next) => {
     try {
         const orders = await Order.find({ "user.userId": req.user._id })
+        console.log(orders[orders.length - 1].items);
         res.render("order1", {
             path: "/orders",
             pageTitle: "Orders",

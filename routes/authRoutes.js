@@ -15,13 +15,11 @@ router.post("/login",
     authController.postLogin)
 
 router.post("/signup",
-    check("email").isEmail().withMessage("Enter a valid Email!").custom((value, { req }) => {
-        return User.findOne({ email: value })
-            .then(user => {
-                if (user) {
-                    return Promise.reject("Email already exists. Please Log in!")
-                }
-            })
+    check("email").isEmail().withMessage("Enter a valid Email!").custom(async (value, { req }) => {
+        const user = await User.findOne({ email: value })
+        if (user) {
+            return Promise.reject("Email already exists. Please Log in!")
+        }
     }),
     check("password", "Password must contain numbers and leters and must be at least 5 characters").isLength({ min: 5 }).isAlphanumeric(),
     check("confirmPassword").custom((value, { req }) => {
