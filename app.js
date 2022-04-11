@@ -11,9 +11,17 @@ const MONGODB_URI = process.env.DB_URI
 const helmet = require('helmet')
 const compression = require('compression')
 
-
 const app = express()
-app.use(helmet())
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            "img-src": ["'self'", "https://res.cloudinary.com"],
+            "script-src": ["'self'", "'unsafe-inline'"], // allow inline scripts and loading resources from thesame origin
+        }
+    },
+    crossOriginEmbedderPolicy: false
+}
+))
 app.use(compression())
 
 const Store = new MongoDbStore({

@@ -96,7 +96,6 @@ exports.getTopNavCart = async (req, res, next) => {
 exports.getOrders = async (req, res, next) => {
     try {
         const orders = await Order.find({ "user.userId": req.user._id })
-        console.log(orders[orders.length - 1].items);
         res.render("order1", {
             path: "/orders",
             pageTitle: "Orders",
